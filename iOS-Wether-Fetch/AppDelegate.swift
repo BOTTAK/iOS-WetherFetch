@@ -16,7 +16,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        UIApplication.shared.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
         return true
+    }
+    
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        if let VC = window?.rootViewController as? WeatherViewController {
+            VC.autoUpdate()
+            completionHandler(.newData)
+        }
+        
+        let config = URLSessionConfiguration.background(withIdentifier: "Weather")
+        let session = URLSession(configuration: config)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -41,6 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    
+ 
 
 }
 
